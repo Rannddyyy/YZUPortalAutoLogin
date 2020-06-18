@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         YZU Portal Auto Login
-// @version      1.21
+// @version      1.22
 // @description  Login to YZU's protal automatically.
 // @author       Jian Feng Lin | https://github.com/Rannddyyy
 // @match        https://portalx.yzu.edu.tw/PortalSocialVB/Login.aspx
@@ -13,7 +13,8 @@
 // ==/UserScript==
 (function() {
     'use strict';
-
+    let stdID = 'yourStdID';
+    let pwd = 'yourPWD';
 
     const worker = Tesseract.createWorker();
     let initWorker = false;
@@ -35,8 +36,8 @@
                 }).then((jsonObj)=>{
                     //console.log(jsonObj['data']['text']);
                     document.getElementById('Txt_VeriCode').value = jsonObj['data']['text'];
-                    document.getElementById("Txt_UserID").value = 'yourStdID';
-                    document.getElementById("Txt_Password").value = 'yourPWD';
+                    document.getElementById("Txt_UserID").value = stdID;
+                    document.getElementById("Txt_Password").value = pwd;
                     document.getElementById("ibnSubmit").click();
                     imgTag.setAttribute('src', blobImg);
                 });
