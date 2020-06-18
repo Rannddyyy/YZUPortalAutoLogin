@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         YZU Portal Auto Login
-// @version      1.22
+// @version      1.23
 // @description  Login to YZU's protal automatically.
 // @author       Jian Feng Lin | https://github.com/Rannddyyy
 // @match        https://portalx.yzu.edu.tw/PortalSocialVB/Login.aspx
@@ -21,8 +21,11 @@
     let listener = false;
 
     function OCR(imgTag) {
-        // html2canvas is a screenshot api, prevent image.load will load from cache
-        html2canvas(imgTag).then(canvas => canvas.toBlob((blob) => {
+        (async()=>{
+            const response = await fetch(imgTag.getAttribute('src'), {cache: 'no-cache',});
+            const blob = await response.blob();
+            return blob;
+        })().then((blob)=>{
             let blobImg = URL.createObjectURL(blob);
             let image = new MarvinImage()
             image.load(blobImg, function() {
@@ -43,7 +46,7 @@
                 });
 
             });
-        }));
+        });
     }
 
     document.onreadystatechange = function () {
@@ -58,6 +61,7 @@
                     //else console.log('initting');
                 }, 10);
             }).then(()=>{
+                document.getElementById('Txt_VeriCode').value = '';
                 document.getElementById('VeriCodePage').addEventListener("load", (evt)=>{
                     OCR(document.getElementById('VeriCodePage').contentDocument.getElementsByTagName('img')[0])
                 })
